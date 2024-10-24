@@ -179,7 +179,7 @@
  comments.forEach(comment => {  
  const commentDiv = document.createElement('div');  
  commentDiv.className = 'comment';  
- commentDiv.innerHTML = `<strong>${comment.name}:</strong> <p>${comment.text}</p><small>(${comment.date})</small>`;  
+ commentDiv.innerHTML = `<strong>${comment.name}:</strong> <p>${comment.text}</p>`;  
  commentSection.appendChild(commentDiv);  
  });  
  }  
@@ -187,15 +187,9 @@
  function addComment() {  
  const nameInput = document.getElementById('name');  
  const commentInput = document.getElementById('comment');  
- const now = new Date();  
- const formattedDate = now.toLocaleString();  
-
  if (nameInput.value && commentInput.value) {  
  const comments = JSON.parse(localStorage.getItem('comments')) || [];  
- comments.push({  
- name: nameInput.value,  
- text: commentInput.value,  
- date: formattedDate });  
+ comments.push({ name: nameInput.value, text: commentInput.value });  
  localStorage.setItem('comments', JSON.stringify(comments));  
  loadComments();  
  nameInput.value = '';  
