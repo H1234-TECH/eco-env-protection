@@ -1,16 +1,95 @@
- <html lang="zh">  
 <head>  
  <meta charset="UTF-8">  
  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
  <title>生态环保安全</title>  
- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">  
+ <link rel="stylesheet" href="styles.css">  
  <style>  
+ body {  
+ font-family: Arial, sans-serif;  
+ line-height:1.6;  
+ margin:0;  
+ padding:0;  
+ background-color: #f4f4f4;  
+ color: #333;  
+ }  
+ header {  
+ background: #4CAF50;  
+ color: white;  
+ padding:10px0;  
+ text-align: center;  
+ }  
+ nav ul {  
+ list-style: none;  
+ padding:0;  
+ }  
+ nav ul li {  
+ display: inline;  
+ margin:015px;  
+ }  
+ nav a {  
+ color: white;  
+ text-decoration: none;  
+ }  
+ section {  
+ background: white;  
+ margin:20px auto;  
+ padding:20px;  
+ border-radius:8px;  
+ max-width:800px;  
+ box-shadow:2px10px rgba(0,0,0,0.1);  
+ }  
+ h2 {  
+ color: #4CAF50;  
+ }  
  .responsive {  
  max-width:100%;  
  height: auto;  
- display: block; margin:0 auto; }  
- section {  
- margin:20px0; /* 为每个部分增加间距 */  
+ display: block;  
+ margin:20px auto;  
+ border-radius:8px;  
+ box-shadow:05px rgba(0,0,0,0.2);  
+ }  
+ footer {  
+ text-align: center;  
+ padding:10px;  
+ background: #4CAF50;  
+ color: white;  
+ position: relative;  
+ bottom:0;  
+ width:100%;  
+ }  
+ form {  
+ display: flex;  
+ flex-direction: column;  
+ margin-bottom:20px;  
+ }  
+ label {  
+ margin-top:10px;  
+ }  
+ input, textarea {  
+ padding:10px;  
+ margin:5px0;  
+ border:1px solid #ccc;  
+ border-radius:5px;  
+ }  
+ button {  
+ background: #4CAF50;  
+ color: white;  
+ border: none;  
+ padding:10px;  
+ cursor: pointer;  
+ border-radius:5px;  
+ margin-top:10px;  
+ }  
+ button:hover {  
+ background: #45a049;  
+ }  
+ .comment {  
+ border:1px solid #ccc;  
+ padding:10px;  
+ margin:10px0;  
+ border-radius:5px;  
+ background: #f9f9f9;  
  }  
  </style>  
 </head>  
@@ -21,7 +100,7 @@
  <ul>  
  <li><a href="#about">关于我们</a></li>  
  <li><a href="#importance">重要性</a></li>  
- <li><a href="#contact">联系我们</a></li>  
+ <li><a href="#comments">你认为的环保是什么呢</a></li>  
  </ul>  
  </nav>  
  </header>  
@@ -29,14 +108,14 @@
  <section id="about">  
  <h2>关于我们</h2>  
  <p>我们致力于保护生态环境，倡导可持续发展的理念，确保我们的后代能够生活在一个更加美好的地球上。</p>  
- <img src="{{ url_for('static', filename='ecology.jpg') }}" alt="生态环保" class="responsive">  
+ <img src="static/ecology.jpg" alt="生态环保" class="responsive">  
  </section>  
 
  <section id="importance">  
  <h2>重要性</h2>  
  <p>生态环保安全是每个人的责任。通过减少污染、节约资源和保护生物多样性，我们可以为未来的可持续发展做出贡献。</p>  
- <img src="{{ url_for('static', filename='sustainability.jpg') }}" alt="可持续发展" class="responsive">  
- <img src="{{ url_for('static', filename='environmental_protection.jpg') }}" alt="环境保护" class="responsive"> <!-- 新增生态环保图片 -->  
+ <img src="static/sustainability.jpg" alt="可持续发展" class="responsive">  
+ <img src="static/environmental_protection.jpg" alt="环境保护" class="responsive">  
  <h3>为什么重要？</h3>  
  <ul>  
  <li>保护生物多样性。</li>  
@@ -46,24 +125,24 @@
  </ul>  
  </section>  
 
- <section id="contact">  
- <h2>联系我们</h2>  
- <form action="/contact" method="POST">  
+ <section id="comments">  
+ <h2>你认为的环保是什么呢</h2>  
+ <form id="commentForm">  
  <label for="name">姓名:</label>  
  <input type="text" id="name" name="name" required>  
 
- <label for="email">电子邮件:</label>  
- <input type="email" id="email" name="email" required>  
+ <label for="comment">评论:</label>  
+ <textarea id="comment" name="comment" rows="4" required></textarea>  
 
- <label for="message">消息:</label>  
- <textarea id="message" name="message" rows="4" required></textarea>  
-
- <button type="submit">发送消息</button>  
+ <button type="button" onclick="addComment()">提交评论</button>  
  </form>  
+
+ <div id="commentSection"></div>  
  </section>  
 
  <footer>  
- <p>版权 &copy;HJY</p>  
+ <p>版权 &copy; HJY</p>  
  </footer>  
-</body>  
-</html>
+
+ <script>  
+ // Load existing comments from local storage function loadComments() { const comments = JSON.parse(localStorage.getItem('comments')) || []; const commentSection = document.getElementById('commentSection'); commentSection.innerHTML = ''; // Clear existing comments comments.forEach(comment => { const commentDiv = document.createElement('div'); commentDiv.className = 'comment'; commentDiv.innerHTML = `<strong>${comment.name}:</strong> <p>${comment.text}</p>`; commentSection.appendChild(commentDiv); }); } // Save a new comment to local storage function addComment() { const nameInput = document.getElementById('name'); const commentInput = document.getElementById('comment'); if (nameInput.value && commentInput.value) { const comments = JSON.parse(localStorage.getItem('comments')) || []; comments.push({ name: nameInput.value, text: commentInput.value }); localStorage.setItem('comments', JSON.stringify(comments)); // Clear the input fields nameInput.value = ''; commentInput.value = ''; // Reload comments to display the new one loadComments(); } else { alert("请填写您的姓名和评论。"); } } // Load comments on page load window.onload = loadComments; </script></body></html>
