@@ -1,95 +1,120 @@
+<html lang="zh">  
 <head>  
  <meta charset="UTF-8">  
  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
  <title>生态环保安全</title>  
- <link rel="stylesheet" href="styles.css">  
  <style>  
  body {  
- font-family: Arial, sans-serif;  
+ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  
  line-height:1.6;  
  margin:0;  
  padding:0;  
- background-color: #f4f4f4;  
+ background-color: white; /* 背景变为白色 */  
  color: #333;  
+ display: flex;  
+ flex-direction: column;  
+ min-height:100vh;  
  }  
  header {  
- background: #4CAF50;  
+ background-color: #8FBC8F; /* 原来的植物绿色 */  
  color: white;  
- padding:10px0;  
+ padding:20px;  
  text-align: center;  
+ box-shadow:02px4px rgba(0,0,0,0.1);  
  }  
+
  nav ul {  
  list-style: none;  
  padding:0;  
+ margin:0;  
+ display: flex;  
+ justify-content: center;  
  }  
+
  nav ul li {  
- display: inline;  
  margin:015px;  
  }  
+
  nav a {  
  color: white;  
  text-decoration: none;  
+ font-weight: bold;  
+ transition: color0.3s;  
  }  
+
+ nav a:hover {  
+ color: #e9c46a;  
+ }  
+
+ main {  
+ flex:1;  
+ padding:20px;  
+ max-width:800px;  
+ margin: auto;  
+ }  
+
  section {  
+ margin-bottom:40px;  
  background: white;  
- margin:20px auto;  
  padding:20px;  
  border-radius:8px;  
- max-width:800px;  
- box-shadow:2px10px rgba(0,0,0,0.1);  
+ box-shadow:02px10px rgba(0,0,0,0.1);  
  }  
+
  h2 {  
- color: #4CAF50;  
+ color: #2a9d8f;  
+ margin-bottom:10px;  
  }  
+
  .responsive {  
  max-width:100%;  
  height: auto;  
- display: block;  
- margin:20px auto;  
+ margin:20px0;  
  border-radius:8px;  
- box-shadow:05px rgba(0,0,0,0.2);  
+ box-shadow:02px5px rgba(0,0,0,0.2);  
  }  
+
+ form, .comment {  
+ margin-top:20px;  
+ }  
+
+ label {  
+ display: block;  
+ margin-bottom:5px;  
+ font-weight: bold;  
+ }  
+
+ input, textarea, button {  
+ width:100%;  
+ padding:10px;  
+ margin-bottom:15px;  
+ border:1px solid #ddd;  
+ border-radius:5px;  
+ font-size:1rem;  
+ }  
+
+ button {  
+ background-color: #2a9d8f;  
+ color: white;  
+ transition: background-color0.3s ease;  
+ cursor: pointer;  
+ }  
+
+ button:hover {  
+ background-color: #21867a;  
+ }  
+
+ .comment {  
+ border-bottom:1px solid #eee;  
+ padding-bottom:10px;  
+ margin-bottom:10px;  
+ }  
+
  footer {  
+ background-color: #8FBC8F; /* 原来的植物绿色 */  
+ color: white;  
  text-align: center;  
  padding:10px;  
- background: #4CAF50;  
- color: white;  
- position: relative;  
- bottom:0;  
- width:100%;  
- }  
- form {  
- display: flex;  
- flex-direction: column;  
- margin-bottom:20px;  
- }  
- label {  
- margin-top:10px;  
- }  
- input, textarea {  
- padding:10px;  
- margin:5px0;  
- border:1px solid #ccc;  
- border-radius:5px;  
- }  
- button {  
- background: #4CAF50;  
- color: white;  
- border: none;  
- padding:10px;  
- cursor: pointer;  
- border-radius:5px;  
- margin-top:10px;  
- }  
- button:hover {  
- background: #45a049;  
- }  
- .comment {  
- border:1px solid #ccc;  
- padding:10px;  
- margin:10px0;  
- border-radius:5px;  
- background: #f9f9f9;  
  }  
  </style>  
 </head>  
@@ -105,6 +130,7 @@
  </nav>  
  </header>  
 
+ <main>  
  <section id="about">  
  <h2>关于我们</h2>  
  <p>我们致力于保护生态环境，倡导可持续发展的理念，确保我们的后代能够生活在一个更加美好的地球上。</p>  
@@ -127,22 +153,60 @@
 
  <section id="comments">  
  <h2>你认为的环保是什么呢</h2>  
- <form id="commentForm">  
+ <form id="commentForm" onsubmit="event.preventDefault(); addComment();">  
  <label for="name">姓名:</label>  
  <input type="text" id="name" name="name" required>  
 
  <label for="comment">评论:</label>  
  <textarea id="comment" name="comment" rows="4" required></textarea>  
 
- <button type="button" onclick="addComment()">提交评论</button>  
+ <button type="submit">提交评论</button>  
  </form>  
 
  <div id="commentSection"></div>  
  </section>  
+ </main>  
 
  <footer>  
  <p>版权 &copy; HJY</p>  
  </footer>  
 
  <script>  
- // Load existing comments from local storage function loadComments() { const comments = JSON.parse(localStorage.getItem('comments')) || []; const commentSection = document.getElementById('commentSection'); commentSection.innerHTML = ''; // Clear existing comments comments.forEach(comment => { const commentDiv = document.createElement('div'); commentDiv.className = 'comment'; commentDiv.innerHTML = `<strong>${comment.name}:</strong> <p>${comment.text}</p>`; commentSection.appendChild(commentDiv); }); } // Save a new comment to local storage function addComment() { const nameInput = document.getElementById('name'); const commentInput = document.getElementById('comment'); if (nameInput.value && commentInput.value) { const comments = JSON.parse(localStorage.getItem('comments')) || []; comments.push({ name: nameInput.value, text: commentInput.value }); localStorage.setItem('comments', JSON.stringify(comments)); // Clear the input fields nameInput.value = ''; commentInput.value = ''; // Reload comments to display the new one loadComments(); } else { alert("请填写您的姓名和评论。"); } } // Load comments on page load window.onload = loadComments; </script></body></html>
+ function loadComments() {  
+ const comments = JSON.parse(localStorage.getItem('comments')) || [];  
+ const commentSection = document.getElementById('commentSection');  
+ commentSection.innerHTML = '';  
+ comments.forEach(comment => {  
+ const commentDiv = document.createElement('div');  
+ commentDiv.className = 'comment';  
+ commentDiv.innerHTML = `<strong>${comment.name}:</strong> <p>${comment.text}</p><small>(${comment.date})</small>`;  
+ commentSection.appendChild(commentDiv);  
+ });  
+ }  
+
+ function addComment() {  
+ const nameInput = document.getElementById('name');  
+ const commentInput = document.getElementById('comment');  
+ const now = new Date();  
+ const formattedDate = now.toLocaleString();  
+
+ if (nameInput.value && commentInput.value) {  
+ const comments = JSON.parse(localStorage.getItem('comments')) || [];  
+ comments.push({  
+ name: nameInput.value,  
+ text: commentInput.value,  
+ date: formattedDate });  
+ localStorage.setItem('comments', JSON.stringify(comments));  
+ loadComments();  
+ nameInput.value = '';  
+ commentInput.value = '';  
+ alert("评论已提交！");  
+ } else {  
+ alert("请填写完整的信息");  
+ }  
+ }  
+
+ window.onload = loadComments;  
+ </script>  
+</body>  
+</html>
