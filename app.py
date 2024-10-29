@@ -1,21 +1,21 @@
-from flask import Flask, render_template, request, redirect, url_for  
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__, template_folder='templates')
 
-@app.route('/')  
-def index():  
-    return render_template('index.html')  
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-@app.route('/contact', methods=['POST'])  
-def contact():  
-    name = request.form['name']  
-    email = request.form['email']  
-    message = request.form['message']  
-    # 这里可以添加代码处理联系表单，例如保存到数据库、发送邮件等  
-    print(f'Name: {name}, Email: {email}, Message: {message}')  
-    return redirect(url_for('index'))  
+@app.route('/contact', methods=['POST'])
+def contact():
+    name = request.form['name']
+    email = request.form['email']
+    message = request.form['message']
+    # 这里可以添加代码处理联系表单，例如保存到数据库、发送邮件等
+    print(f'Name: {name}, Email: {email}, Message: {message}')
+    return redirect(url_for('index'))
 
-if __name__ == '__main__':  
+if __name__ == '__main__':
     app.run(debug=True)
 
 
